@@ -1,0 +1,1250 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Biodiversidad con criterio · Airbus</title>
+  <style>
+    :root{
+      --bg1:#fbfdf8;
+      --bg2:#f7f8f4;
+      --bg3:#f8fafb;
+      --text:#0f172a;
+      --muted:#546275;
+      --line:#e7edf3;
+      --white:#ffffff;
+      --shadow:0 30px 90px -42px rgba(15,23,42,.22);
+      --shadow-sm:0 18px 50px -34px rgba(15,23,42,.18);
+      --radius:34px;
+      --green:#5a8a68;
+      --blue:#6e8fa8;
+      --gold:#a78657;
+      --rose:#cb9aad;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, "Segoe UI", Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(187,229,196,.35), transparent 20%),
+        radial-gradient(circle at top right, rgba(190,215,247,.35), transparent 22%),
+        radial-gradient(circle at bottom left, rgba(250,220,186,.28), transparent 18%),
+        linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 38%,var(--bg3) 100%);
+    }
+    .orb{
+      position:fixed; border-radius:999px; filter:blur(60px); pointer-events:none; z-index:0; opacity:.7;
+    }
+    .orb.one{left:-90px;top:-40px;width:260px;height:260px;background:#d6efdd}
+    .orb.two{right:-110px;top:110px;width:320px;height:320px;background:#dceaf7}
+    .orb.three{left:18%;bottom:-100px;width:260px;height:260px;background:#fde7cb}
+    .orb.four{right:12%;bottom:30px;width:220px;height:220px;background:#f6dce6}
+
+    .shell{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:22px 18px 70px}
+    .topbar{
+      position:sticky; top:0; z-index:20;
+      margin-bottom:22px;
+      background:rgba(255,255,255,.78);
+      backdrop-filter: blur(16px);
+      border:1px solid rgba(255,255,255,.9);
+      border-radius:999px;
+      box-shadow:0 14px 40px -24px rgba(15,23,42,.28);
+      padding:12px 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brandWrap{display:flex; align-items:center; gap:12px}
+    .brandIcon{
+      width:44px;height:44px;border-radius:999px;display:grid;place-items:center;
+      background:linear-gradient(135deg,#e8f3ea 0%,#f7fbe8 40%,#ebf2ff 100%);
+      color:#3c5561; box-shadow:0 8px 20px -12px rgba(15,23,42,.16); font-size:18px;
+    }
+    .brandTitle{font-weight:700; font-size:15px}
+    .brandSub{font-size:12px;color:#758195}
+    .navPill{
+      display:flex; gap:6px; background:#eef2f7; padding:5px; border-radius:999px;
+    }
+    .navPill button{
+      border:0; background:transparent; color:#556173; padding:10px 15px; border-radius:999px; cursor:pointer; font-weight:600;
+    }
+    .navPill button.active,.navPill button:hover{background:white;color:#111827; box-shadow:0 4px 14px -8px rgba(15,23,42,.22)}
+
+    .view{display:none}
+    .view.active{display:block}
+
+    .hero{
+      position:relative; overflow:hidden;
+      border:1px solid rgba(255,255,255,.92);
+      border-radius:42px;
+      background:linear-gradient(135deg,#edf9ef 0%,#fbfdf8 22%,#edf4ff 58%,#fff7ee 100%);
+      box-shadow:0 40px 110px -44px rgba(15,23,42,.28);
+      padding:26px;
+      margin-bottom:24px;
+    }
+    .hero::before{
+      content:""; position:absolute; inset:0;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.92), transparent 28%),
+        radial-gradient(circle at center right, rgba(136,168,152,.16), transparent 26%),
+        radial-gradient(circle at bottom left, rgba(133,170,216,.16), transparent 28%);
+      pointer-events:none;
+    }
+    .heroGrid{position:relative; display:grid; gap:24px; align-items:center}
+    .heroGrid.home{grid-template-columns:1.05fr .95fr}
+    .heroGrid.module{grid-template-columns:1.02fr .98fr}
+
+    .chips{display:flex; flex-wrap:wrap; gap:8px}
+    .chip{
+      display:inline-flex; align-items:center;
+      border-radius:999px; padding:10px 14px;
+      font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.18em;
+      color:#5c6572; background:rgba(255,255,255,.92); box-shadow:0 8px 20px -12px rgba(15,23,42,.16);
+    }
+    .chip.soft-green{background:#edf4ef; border:1px solid #dbe8de}
+    .chip.soft-blue{background:#eef3fb; border:1px solid #dce5f4}
+    .chip.soft-gold{background:#fff3e1; border:1px solid #efdfc1}
+    .chip.soft-rose{background:#fff1f6; border:1px solid #f4d8e3}
+
+    h1.main{
+      margin:10px 0 0;
+      font-size:78px; line-height:.92; letter-spacing:-.05em;
+    }
+    h1.main .grad{
+      background:linear-gradient(90deg,var(--green),var(--blue),var(--gold));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .lead{
+      max-width:850px; margin:20px 0 0; font-size:18px; line-height:1.85; color:var(--muted);
+    }
+    .heroBtns{display:flex; flex-wrap:wrap; gap:12px; margin-top:28px}
+    .btn{
+      border:0; border-radius:999px; padding:15px 22px; cursor:pointer;
+      font-size:14px; font-weight:700; letter-spacing:.01em;
+      display:inline-flex; align-items:center; gap:10px;
+    }
+    .btn.primary{background:#4f8a67; color:white; box-shadow:0 16px 40px -18px rgba(79,138,103,.55)}
+    .btn.secondary{background:#fff7ea; color:#1f2937; border:1px solid #d8c39a; box-shadow:0 8px 20px -12px rgba(15,23,42,.12)}
+    .btn.dark{background:#111827; color:white}
+    .btn.light{background:white; color:#3b4757; border:1px solid #dbe4ee}
+    .btn:hover{transform:translateY(-1px)}
+
+    .metrics{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin-top:24px; max-width:720px}
+    .metric{
+      position:relative; overflow:hidden; background:rgba(255,255,255,.94); border:1px solid rgba(255,255,255,.92);
+      border-radius:26px; padding:18px 18px 20px; box-shadow:var(--shadow-sm);
+    }
+    .metric .ghost{
+      position:absolute; right:10px; top:-2px; font-size:64px; line-height:1; font-weight:700; color:rgba(15,23,42,.06); letter-spacing:-.08em;
+    }
+    .metric .bar{width:58px;height:6px;border-radius:999px;background:#111827;opacity:.78;margin-bottom:12px}
+    .metric .value{font-size:34px;font-weight:800;letter-spacing:-.04em}
+    .metric .label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.18em;color:#6b7280;margin-top:4px}
+
+    .visualBox{
+      position:relative; overflow:hidden; min-height:460px; border-radius:34px; border:1px solid rgba(255,255,255,.92);
+      box-shadow:var(--shadow);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.94), transparent 28%),
+        linear-gradient(135deg,#f8fffb 0%,#edf7ef 28%,#eef4ff 62%,#fff8f1 100%);
+    }
+    .visualBox img{width:100%; height:100%; min-height:460px; object-fit:cover; display:block}
+    .floating{
+      position:absolute; background:rgba(255,255,255,.94); border:1px solid rgba(255,255,255,.92);
+      border-radius:24px; padding:16px 18px; box-shadow:var(--shadow-sm); backdrop-filter:blur(10px);
+    }
+    .floating.left{left:-18px; top:34px}
+    .floating.right{right:-10px; bottom:-16px; background:rgba(15,23,42,.9); color:white}
+    .floating .mini{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.18em; color:#6b7280; margin-bottom:8px}
+    .floating.right .mini{color:rgba(255,255,255,.72)}
+    .floating ul{margin:0; padding:0; list-style:none}
+    .floating li{display:flex; align-items:center; gap:9px; font-size:14px; margin:7px 0}
+    .dot{width:10px;height:10px;border-radius:999px;background:#6d8fa8}
+    .dot.green{background:#88d0a5}
+    .dot.rose{background:#f2b9c9}
+    .dot.amber{background:#f7d37d}
+    .dot.sky{background:#8ec8ff}
+    .dot.teal{background:#79d7cb}
+    .dot.violet{background:#b79cff}
+
+    .grid2{display:grid; gap:22px; grid-template-columns:1.08fr .92fr; margin-bottom:24px}
+    .panel{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.9);
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      padding:26px;
+    }
+    .panel.tinted-green{background:linear-gradient(135deg,#f0f7f0 0%,#ffffff 50%,#f4f6ff 100%)}
+    .panel.tinted-blue{background:linear-gradient(135deg,#eef4ff 0%,#ffffff 100%)}
+    .panel.tinted-gold{background:linear-gradient(135deg,#fff6ea 0%,#ffffff 100%)}
+    .panel.tinted-teal{background:linear-gradient(135deg,#eefaf7 0%,#ffffff 100%)}
+    .panel.tinted-violet{background:linear-gradient(135deg,#f4efff 0%,#ffffff 100%)}
+    .panel.tinted-rose{background:linear-gradient(135deg,#fff0f4 0%,#ffffff 100%)}
+    .eyebrow{font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.24em; color:#758195; margin-bottom:12px}
+    h2.section{font-size:48px; line-height:1.02; letter-spacing:-.04em; margin:0 0 14px}
+    p.sectionText{font-size:16px; line-height:1.9; color:var(--muted); margin:0}
+    .splitCards{display:grid; gap:16px; grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:24px}
+    .smallCard{
+      border:1px solid var(--line); background:linear-gradient(180deg,#ffffff 0%,#fbfcfa 100%);
+      border-radius:24px; padding:18px; box-shadow:0 10px 30px -24px rgba(15,23,42,.18);
+    }
+    .smallCard .miniChip{
+      display:inline-flex; padding:8px 12px; border-radius:999px; font-size:11px; font-weight:800;
+      text-transform:uppercase; letter-spacing:.16em; color:#5f6874; margin-bottom:10px;
+    }
+    .miniChip.green{background:#edf4ef}
+    .miniChip.blue{background:#eef3fb}
+    .miniChip.gold{background:#fff3e1}
+    .smallCard p{margin:0; font-size:15px; line-height:1.85; color:#556173}
+
+    .cards4,.cards3,.cards2,.cards6{display:grid; gap:16px; margin-top:24px}
+    .cards4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .cards3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .cards2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .cards6{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .card{
+      position:relative; overflow:hidden; border-radius:28px; border:1px solid rgba(255,255,255,.9);
+      padding:20px; box-shadow:var(--shadow-sm);
+      background:linear-gradient(135deg,#eef8ef 0%,#ffffff 100%);
+      min-height:340px;
+    }
+    .card.blue{background:linear-gradient(135deg,#eef4ff 0%,#ffffff 100%)}
+    .card.gold{background:linear-gradient(135deg,#fff4ea 0%,#ffffff 100%)}
+    .card.violet{background:linear-gradient(135deg,#f4efff 0%,#ffffff 100%)}
+    .card.teal{background:linear-gradient(135deg,#eefaf7 0%,#ffffff 100%)}
+    .card.rose{background:linear-gradient(135deg,#fff0f5 0%,#ffffff 100%)}
+    .card .bigIndex{
+      position:absolute; right:12px; top:2px; font-size:74px; line-height:1; font-weight:800; color:rgba(15,23,42,.06); letter-spacing:-.1em
+    }
+    .card .bottomBar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:rgba(17,24,39,.82)}
+    .card .tag{
+      display:inline-flex; padding:8px 12px; border-radius:999px; background:rgba(255,255,255,.95);
+      font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.18em; color:#5f6874; box-shadow:0 8px 20px -12px rgba(15,23,42,.14)
+    }
+    .card .bar{width:58px;height:6px;border-radius:999px;background:#111827;opacity:.78;margin:12px 0 16px}
+    .card h3{margin:0; font-size:30px; line-height:1.06; letter-spacing:-.035em}
+    .card p{margin:18px 0 0; font-size:15px; line-height:1.9; color:#586477}
+    .card.minih{min-height:260px}
+    .card.mid{min-height:420px}
+    .card.tall{min-height:520px}
+
+    .imageCard{
+      position:relative; overflow:hidden; border-radius:22px; border:1px solid rgba(255,255,255,.9); box-shadow:0 10px 30px -24px rgba(15,23,42,.18);
+      min-height:240px; background:#f8fafc;
+    }
+    .imageCard img{width:100%; height:100%; min-height:240px; object-fit:cover; display:block}
+    .imageBadge{
+      position:absolute; left:12px; top:12px; z-index:2; background:rgba(255,255,255,.94); color:#3f4a59;
+      padding:8px 12px; border-radius:999px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.16em; box-shadow:0 8px 20px -12px rgba(15,23,42,.16)
+    }
+
+    .moduleGrid{display:grid; gap:18px; grid-template-columns:repeat(3,minmax(0,1fr))}
+    .moduleCard{
+      position:relative; overflow:hidden; border-radius:34px; border:1px solid rgba(255,255,255,.9);
+      background:white; box-shadow:var(--shadow); cursor:pointer;
+      display:flex; flex-direction:column;
+    }
+    .moduleTop{
+      position:relative; padding:22px;
+      background:linear-gradient(135deg,#eef8ef 0%,#ffffff 100%);
+    }
+    .moduleTop.blue{background:linear-gradient(135deg,#eef5ff 0%,#ffffff 100%)}
+    .moduleTop.gold{background:linear-gradient(135deg,#fff6ea 0%,#ffffff 100%)}
+    .moduleTop.teal{background:linear-gradient(135deg,#eefaf7 0%,#ffffff 100%)}
+    .moduleTop.violet{background:linear-gradient(135deg,#f3efff 0%,#ffffff 100%)}
+    .moduleTop.rose{background:linear-gradient(135deg,#fff0f4 0%,#ffffff 100%)}
+    .moduleGhost{position:absolute; right:12px; top:4px; font-size:84px; font-weight:800; line-height:1; color:rgba(15,23,42,.06); letter-spacing:-.1em}
+    .moduleVisual{
+      position:relative; margin-top:18px; overflow:hidden; border-radius:30px; min-height:240px; border:1px solid rgba(255,255,255,.9);
+      box-shadow:0 18px 50px -34px rgba(15,23,42,.18);
+      background:linear-gradient(135deg,#ffffff 0%,#f2f7f3 38%,#eef3fb 100%);
+    }
+    .moduleVisual img{width:100%; height:100%; min-height:240px; object-fit:cover; display:block}
+    .moduleBody{padding:22px; display:flex; flex-direction:column; gap:14px; flex:1}
+    .moduleMeta{display:flex; justify-content:space-between; align-items:flex-start; gap:12px}
+    .moduleNumLabel{font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.2em; color:#6b7280}
+    .moduleDur{font-size:14px; color:#6b7280; margin-top:4px}
+    .moduleBody h3{font-size:36px; line-height:1.04; margin:0; letter-spacing:-.04em}
+    .moduleBody p{margin:0; font-size:15px; line-height:1.85; color:#556173}
+    .pillRow{display:flex; flex-wrap:wrap; gap:8px}
+    .miniPill{background:#f4f7fa; color:#5c6674; border-radius:999px; padding:8px 12px; font-size:12px; font-weight:600}
+    .moduleFoot{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:auto}
+    .openLabel{font-size:12px; text-transform:uppercase; letter-spacing:.18em; color:#7a8593; font-weight:700}
+
+    .modulePage{display:none}
+    .modulePage.active{display:block}
+    .moduleHeader{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:18px}
+
+    .imgGrid2{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px}
+
+    .progressWrap{
+      background:rgba(255,255,255,.92); border:1px solid rgba(255,255,255,.9); border-radius:30px; padding:18px; box-shadow:var(--shadow-sm)
+    }
+    .progressHead{display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:14px}
+    .progressMeta{font-size:14px; color:#6b7280}
+    .progressBarTop{display:flex; justify-content:space-between; font-size:12px; font-weight:800; letter-spacing:.16em; color:#7a8593; margin-bottom:8px}
+    .progressRail{height:12px; background:#e5eaf0; border-radius:999px; overflow:hidden}
+    .progressFill{height:100%; width:0%; background:linear-gradient(90deg,#88a898,#8fa6c5,#d1b27e); border-radius:999px}
+
+    .footer{
+      margin-top:24px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+      border:1px solid rgba(255,255,255,.9); background:rgba(255,255,255,.88); border-radius:24px; padding:16px 18px; box-shadow:0 10px 30px -24px rgba(15,23,42,.18); color:#758195; font-size:14px;
+    }
+    .footer a,.footer button{color:#3f4b5b; background:none; border:0; cursor:pointer; font-weight:700}
+
+    .missing{
+      display:grid; place-items:center; min-height:240px; color:#6b7280; text-align:center; padding:20px; line-height:1.7;
+      background:linear-gradient(135deg,#ffffff 0%,#f8fafc 100%);
+    }
+
+    @media (max-width: 1200px){
+      .heroGrid.home,.heroGrid.module,.grid2{grid-template-columns:1fr}
+      .moduleGrid,.cards4,.cards3,.cards6{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width: 820px){
+      .shell{padding:16px 12px 54px}
+      .topbar{border-radius:28px}
+      .navPill{width:100%; justify-content:space-between}
+      .topbar{flex-direction:column; align-items:stretch}
+      h1.main{font-size:56px}
+      h2.section{font-size:38px}
+      .metrics,.splitCards,.cards2,.moduleGrid,.cards4,.cards3,.cards6,.imgGrid2{grid-template-columns:1fr}
+      .visualBox,.visualBox img{min-height:320px}
+      .floating.left,.floating.right{position:static; margin-top:14px}
+    }
+  </style>
+</head>
+<body>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+  <div class="orb four"></div>
+
+  <div class="shell">
+    <header class="topbar">
+      <div class="brandWrap">
+        <div class="brandIcon">🍃</div>
+        <div>
+          <div class="brandTitle">Biodiversidad con criterio</div>
+          <div class="brandSub">Versión local premium · Airbus</div>
+        </div>
+      </div>
+      <nav class="navPill">
+        <button id="navHome" class="active" onclick="showView('home')">Inicio</button>
+        <button id="navMenu" onclick="showView('menu')">Menú del curso</button>
+      </nav>
+    </header>
+
+    <section id="home" class="view active">
+      <div class="hero">
+        <div class="heroGrid home">
+          <div>
+            <div class="chips">
+              <span class="chip">Curso digital</span>
+              <span class="chip soft-green">Rigor</span>
+              <span class="chip soft-blue">Acción aplicada</span>
+            </div>
+            <h1 class="main">
+              Biodiversidad.<br>
+              <span class="grad">Airbus.</span><br>
+              Criterio y acción.
+            </h1>
+            <p class="lead">
+              Un recorrido digital para entender qué es la biodiversidad, por qué importa en Airbus,
+              cómo se relaciona con decisiones cotidianas y cómo traducir ese aprendizaje a mejoras
+              creíbles y aplicables en tu entorno de trabajo.
+            </p>
+            <div class="heroBtns">
+              <button class="btn primary" onclick="showView('menu')">Comenzar el curso ▶</button>
+              <button class="btn secondary" onclick="showView('menu')">Ver recorrido visual</button>
+            </div>
+            <div class="metrics">
+              <div class="metric"><div class="ghost">6</div><div class="bar"></div><div class="value">6</div><div class="label">Módulos</div></div>
+              <div class="metric"><div class="ghost">✦</div><div class="bar"></div><div class="value">Premium</div><div class="label">Sensación</div></div>
+              <div class="metric"><div class="ghost">→</div><div class="bar"></div><div class="value">Aplicable</div><div class="label">Resultado</div></div>
+            </div>
+          </div>
+          <div class="visualBox">
+            <div class="missing" style="min-height:460px; display:grid; place-items:center; background:linear-gradient(135deg,#f8fffb 0%,#edf7ef 28%,#eef4ff 62%,#fff8f1 100%);">
+              <div>
+                <div style="width:56px;height:56px;border-radius:18px;background:white;display:grid;place-items:center;margin:0 auto 14px;box-shadow:0 8px 20px -12px rgba(15,23,42,.16);font-size:22px;">✦</div>
+                <div style="display:inline-block;border-radius:999px;background:white;padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#556173;box-shadow:0 8px 20px -12px rgba(15,23,42,.16);">Portada editorial</div>
+                <p style="max-width:280px;margin:14px auto 0;color:#64748b;line-height:1.8;font-size:14px;">Experiencia premium, ritmo visual y recorrido claro desde los fundamentos hasta la acción aplicada.</p>
+              </div>
+            </div>
+            <div class="floating left">
+              <div class="mini">En este curso</div>
+              <ul>
+                <li><span class="dot sky"></span>Fundamentos claros</li>
+                <li><span class="dot sky"></span>Casos aplicados</li>
+                <li><span class="dot sky"></span>Plan de acción final</li>
+              </ul>
+            </div>
+            <div class="floating right">
+              <div class="mini">Aprenderás a</div>
+              <ul>
+                <li><span class="dot green"></span>Interpretar mejor impactos y dependencias</li>
+                <li><span class="dot green"></span>Distinguir acción real de gesto simbólico</li>
+                <li><span class="dot green"></span>Formular propuestas más creíbles</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="eyebrow">Por qué importa</div>
+          <h2 class="section">La biodiversidad no es un decorado</h2>
+          <p class="sectionText">
+            La biodiversidad afecta a riesgos, recursos, decisiones, comunicación y credibilidad dentro de Airbus.
+            Comprenderla bien es el primer paso para actuar con más criterio.
+          </p>
+          <div class="cards2">
+            <div class="card">
+              <div class="bigIndex">01</div><div class="bottomBar"></div>
+              <span class="tag">Punto clave</span><div class="bar"></div>
+              <h3>Biodiversidad y Airbus</h3>
+              <p>La biodiversidad influye en riesgos, recursos, decisiones, comunicación y credibilidad dentro de Airbus.</p>
+            </div>
+            <div class="card blue">
+              <div class="bigIndex">02</div><div class="bottomBar"></div>
+              <span class="tag">Punto clave</span><div class="bar"></div>
+              <h3>Decisiones cotidianas</h3>
+              <p>Compras, alimentación, mantenimiento, comunicación y uso del entorno también cuentan.</p>
+            </div>
+            <div class="card gold">
+              <div class="bigIndex">03</div><div class="bottomBar"></div>
+              <span class="tag">Punto clave</span><div class="bar"></div>
+              <h3>Acción real frente a gesto simbólico</h3>
+              <p>No toda iniciativa verde genera valor ecológico real.</p>
+            </div>
+            <div class="card violet">
+              <div class="bigIndex">04</div><div class="bottomBar"></div>
+              <span class="tag">Punto clave</span><div class="bar"></div>
+              <h3>Credibilidad y rigor</h3>
+              <p>Actuar y comunicar con criterio es clave para evitar mensajes vacíos.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel tinted-green">
+          <div class="eyebrow">Qué encontrarás</div>
+          <h2 class="section">Un recorrido con claridad y sensación de avance</h2>
+          <p class="sectionText">
+            Seis módulos estructurados, casos prácticos aplicados, actividades breves,
+            progreso visible y un cierre orientado a formular tu propio plan de acción.
+          </p>
+          <div style="margin-top:24px" class="visualBox">
+            <img src="images/m6/m6-hero.jpg" alt="Visual del curso" onerror="missingImage(this,'Sube una imagen en images/m6/m6-hero.jpg')">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel tinted-gold">
+        <div class="grid2" style="grid-template-columns:.92fr 1.08fr; margin:0">
+          <div style="padding-right:8px">
+            <div class="eyebrow">Audiencia</div>
+            <h2 class="section">Pensado para personas que quieren actuar con criterio</h2>
+            <p class="sectionText">
+              El curso está orientado a trabajadores y trabajadoras de Airbus, tanto de planta como de oficina,
+              que quieran comprender mejor la biodiversidad y convertir esa comprensión en propuestas más creíbles.
+            </p>
+            <div class="heroBtns" style="margin-top:24px">
+              <span class="miniPill">Operaciones y planta</span>
+              <span class="miniPill">Oficinas y funciones corporativas</span>
+              <span class="miniPill">Sostenibilidad y medioambiente</span>
+              <span class="miniPill">Compras, facilities, comunicación e ingeniería</span>
+            </div>
+          </div>
+          <div class="cards2" style="margin-top:0">
+            <div class="smallCard">
+              <span class="miniChip green">Enfoque</span>
+              <p>Adulto y profesional.<br>Rigurosamente explicado.<br>Aplicado al contexto Airbus.</p>
+            </div>
+            <div class="smallCard">
+              <span class="miniChip blue">Recorrido</span>
+              <p>Fundamentos.<br>Airbus y decisiones.<br>Acción con evidencia.</p>
+            </div>
+            <div class="smallCard" style="grid-column:1 / -1">
+              <span class="miniChip gold">Resultado</span>
+              <p>Al terminar, tendrás una base más sólida para interpretar la biodiversidad, evaluar mejor las iniciativas ambientales y formular propuestas aplicables con más criterio y credibilidad.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>Biodiversidad con criterio · Curso digital sobre biodiversidad aplicada</span>
+        <button onclick="showView('menu')">Ir al menú del curso</button>
+      </div>
+    </section>
+
+    <section id="menu" class="view">
+      <div class="hero">
+        <div class="heroGrid module">
+          <div>
+            <div class="chips">
+              <span class="chip">Recorrido del curso</span>
+              <span class="chip soft-green">De los fundamentos a la acción</span>
+            </div>
+            <h1 class="main" style="font-size:68px">
+              Explora los 6 módulos del curso<br>
+              <span class="grad">desde los fundamentos</span><br>
+              hasta tu plan de acción.
+            </h1>
+            <p class="lead">
+              Aquí encontrarás una secuencia clara de aprendizaje: comprender qué es la biodiversidad,
+              ver cómo se relaciona con Airbus, conectarla con decisiones cotidianas, distinguir acciones
+              sólidas de gestos simbólicos, entender qué medir y terminar con una propuesta propia aplicable.
+            </p>
+          </div>
+          <div class="progressWrap">
+            <div class="progressHead">
+              <div>
+                <div style="font-size:15px;font-weight:700;color:#334155">Progreso global</div>
+                <div class="progressMeta">0 de 6 módulos completados</div>
+              </div>
+              <button class="btn light" style="padding:10px 14px" onclick="showView('home')">← Volver a inicio</button>
+            </div>
+            <div class="progressBarTop"><span>PROGRESS_BAR_GLOBAL</span><span>0%</span></div>
+            <div class="progressRail"><div class="progressFill"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="moduleGrid">
+        <article class="moduleCard" onclick="showModule('m1')">
+          <div class="moduleTop">
+            <div class="moduleGhost">01</div>
+            <div class="moduleMeta">
+              <div><div class="moduleNumLabel">Módulo 1</div><div class="moduleDur">20–25 min</div></div>
+              <span class="chip">Base sólida</span>
+            </div>
+            <div class="moduleVisual"><img src="images/m1/m1-hero.jpg" alt="Módulo 1" onerror="missingImage(this,'Sube images/m1/m1-hero.jpg')"></div>
+          </div>
+          <div class="moduleBody">
+            <h3>Fundamentos de biodiversidad</h3>
+            <p>Comprende qué es la biodiversidad, por qué importa y qué está en juego.</p>
+            <div class="pillRow"><span class="miniPill">Disponible</span><span class="miniPill">Ruta visual</span></div>
+            <div class="moduleFoot"><span class="openLabel">Abrir módulo</span><button class="btn dark" style="padding:12px 18px">Entrar →</button></div>
+          </div>
+        </article>
+
+        <article class="moduleCard" onclick="showModule('m2')">
+          <div class="moduleTop blue">
+            <div class="moduleGhost">02</div>
+            <div class="moduleMeta">
+              <div><div class="moduleNumLabel">Módulo 2</div><div class="moduleDur">25–30 min</div></div>
+              <span class="chip">Cradle to grave</span>
+            </div>
+            <div class="moduleVisual"><img src="images/m2/m2-hero.jpg" alt="Módulo 2" onerror="missingImage(this,'Sube images/m2/m2-hero.jpg')"></div>
+          </div>
+          <div class="moduleBody">
+            <h3>Ciclo de vida aeronáutico y biodiversidad</h3>
+            <p>Analiza cómo la aeronáutica afecta a la biodiversidad desde el diseño hasta el fin de vida.</p>
+            <div class="pillRow"><span class="miniPill">Disponible</span><span class="miniPill">Ruta visual</span></div>
+            <div class="moduleFoot"><span class="openLabel">Abrir módulo</span><button class="btn dark" style="padding:12px 18px">Entrar →</button></div>
+          </div>
+        </article>
+
+        <article class="moduleCard" onclick="showModule('m3')">
+          <div class="moduleTop gold">
+            <div class="moduleGhost">03</div>
+            <div class="moduleMeta">
+              <div><div class="moduleNumLabel">Módulo 3</div><div class="moduleDur">30–35 min</div></div>
+              <span class="chip">Vida cotidiana</span>
+            </div>
+            <div class="moduleVisual"><img src="images/m3/m3-hero.jpg" alt="Módulo 3" onerror="missingImage(this,'Sube images/m3/m3-hero.jpg')"></div>
+          </div>
+          <div class="moduleBody">
+            <h3>Biodiversidad, alimentación y estilos de vida</h3>
+            <p>Explora cómo la alimentación, el consumo y los hábitos cotidianos influyen en la biodiversidad.</p>
+            <div class="pillRow"><span class="miniPill">Disponible</span><span class="miniPill">Ruta visual</span></div>
+            <div class="moduleFoot"><span class="openLabel">Abrir módulo</span><button class="btn dark" style="padding:12px 18px">Entrar →</button></div>
+          </div>
+        </article>
+
+        <article class="moduleCard" onclick="showModule('m4')">
+          <div class="moduleTop teal">
+            <div class="moduleGhost">04</div>
+            <div class="moduleMeta">
+              <div><div class="moduleNumLabel">Módulo 4</div><div class="moduleDur">30–35 min</div></div>
+              <span class="chip">Intervenciones reales</span>
+            </div>
+            <div class="moduleVisual"><img src="images/m4/m4-hero.jpg" alt="Módulo 4" onerror="missingImage(this,'Sube images/m4/m4-hero.jpg')"></div>
+          </div>
+          <div class="moduleBody">
+            <h3>Conservación, restauración y soluciones basadas en la naturaleza</h3>
+            <p>Aprende a distinguir entre intervenciones sólidas, mejoras parciales y acciones cosméticas.</p>
+            <div class="pillRow"><span class="miniPill">Disponible</span><span class="miniPill">Ruta visual</span></div>
+            <div class="moduleFoot"><span class="openLabel">Abrir módulo</span><button class="btn dark" style="padding:12px 18px">Entrar →</button></div>
+          </div>
+        </article>
+
+        <article class="moduleCard" onclick="showModule('m5')">
+          <div class="moduleTop violet">
+            <div class="moduleGhost">05</div>
+            <div class="moduleMeta">
+              <div><div class="moduleNumLabel">Módulo 5</div><div class="moduleDur">30–35 min</div></div>
+              <span class="chip">Rigor y evidencia</span>
+            </div>
+            <div class="moduleVisual"><img src="images/m5/m5-hero.jpg" alt="Módulo 5" onerror="missingImage(this,'Sube images/m5/m5-hero.jpg')"></div>
+          </div>
+          <div class="moduleBody">
+            <h3>Indicadores, datos e impacto real</h3>
+            <p>Descubre cómo medir, justificar y comunicar impacto con mayor credibilidad.</p>
+            <div class="pillRow"><span class="miniPill">Disponible</span><span class="miniPill">Ruta visual</span></div>
+            <div class="moduleFoot"><span class="openLabel">Abrir módulo</span><button class="btn dark" style="padding:12px 18px">Entrar →</button></div>
+          </div>
+        </article>
+
+        <article class="moduleCard" onclick="showModule('m6')">
+          <div class="moduleTop rose">
+            <div class="moduleGhost">06</div>
+            <div class="moduleMeta">
+              <div><div class="moduleNumLabel">Módulo 6</div><div class="moduleDur">30–35 min</div></div>
+              <span class="chip">Aplicación real</span>
+            </div>
+            <div class="moduleVisual"><img src="images/m6/m6-hero.jpg" alt="Módulo 6" onerror="missingImage(this,'Sube images/m6/m6-hero.jpg')"></div>
+          </div>
+          <div class="moduleBody">
+            <h3>Tu plan de acción en biodiversidad</h3>
+            <p>Convierte el aprendizaje en una propuesta aplicable a tu entorno de trabajo.</p>
+            <div class="pillRow"><span class="miniPill">Disponible</span><span class="miniPill">Ruta visual</span></div>
+            <div class="moduleFoot"><span class="openLabel">Abrir módulo</span><button class="btn dark" style="padding:12px 18px">Entrar →</button></div>
+          </div>
+        </article>
+      </div>
+
+      <div class="footer">
+        <span>Biodiversidad con criterio · Menú de módulos</span>
+        <button onclick="showView('home')">Volver a inicio</button>
+      </div>
+    </section>
+
+    <!-- MODULE PAGES -->
+    <section id="module-m1" class="modulePage">
+      <div class="hero">
+        <div class="heroGrid module">
+          <div>
+            <div class="moduleHeader">
+              <button class="btn light" style="padding:10px 14px" onclick="showView('menu')">← Volver al menú</button>
+              <span class="chip soft-green">Módulo 1</span>
+            </div>
+            <h2 class="section" style="font-size:62px">Fundamentos de biodiversidad</h2>
+            <p class="sectionText" style="font-size:18px">
+              En este módulo construirás la base del curso: qué significa biodiversidad, cuáles son sus tres niveles principales, qué funciones ecológicas sostiene, por qué no debe reducirse a una lista de especies visibles y qué presiones están provocando su pérdida.
+            </p>
+            <div class="metrics">
+              <div class="metric"><div class="ghost">9</div><div class="bar"></div><div class="value">9</div><div class="label">Pantallas</div></div>
+              <div class="metric"><div class="ghost">25</div><div class="bar"></div><div class="value">20–25</div><div class="label">Minutos</div></div>
+              <div class="metric"><div class="ghost">◎</div><div class="bar"></div><div class="value">Base</div><div class="label">De todo el curso</div></div>
+            </div>
+          </div>
+          <div class="visualBox">
+            <img src="images/m1/m1-hero.jpg" alt="Módulo 1 hero" onerror="missingImage(this,'Falta images/m1/m1-hero.jpg')">
+            <div class="floating right">
+              <div class="mini">Aprenderás a</div>
+              <ul>
+                <li><span class="dot green"></span>Definir biodiversidad con precisión</li>
+                <li><span class="dot green"></span>Reconocer sus tres niveles</li>
+                <li><span class="dot green"></span>Comprender las principales presiones</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="eyebrow">Por qué importa</div>
+          <h2 class="section">No se puede proteger bien lo que no se comprende con precisión</h2>
+          <p class="sectionText">
+            La biodiversidad no se limita a especies visibles o espacios naturales emblemáticos. Incluye relaciones,
+            procesos, interacciones y sistemas que sostienen la vida y buena parte de la actividad humana.
+          </p>
+          <div class="splitCards">
+            <div class="smallCard">
+              <span class="miniChip green">Definición</span>
+              <p>Biodiversidad es la variedad de vida en todas sus formas, sus relaciones y los sistemas que la sostienen. Incluye microorganismos, plantas, animales, suelos, hábitats y las conexiones ecológicas entre ellos.</p>
+            </div>
+            <div class="smallCard">
+              <span class="miniChip blue">Clave</span>
+              <p>Sin una base sólida es fácil simplificar en exceso, comunicar mal o apoyar iniciativas con poco valor ecológico real. Este módulo busca evitar esa superficialidad desde el principio.</p>
+            </div>
+          </div>
+        </div>
+        <div class="panel tinted-green">
+          <div class="eyebrow">Apoyo visual</div>
+          <h2 class="section">Qué abarca realmente la biodiversidad</h2>
+          <p class="sectionText">
+            Genes, especies, ecosistemas, procesos ecológicos, funciones esenciales y relaciones entre organismos.
+          </p>
+          <div style="margin-top:24px" class="imageCard">
+            <span class="imageBadge">Apoyo visual</span>
+            <img src="images/m1/m1-apoyo.jpg" alt="Apoyo módulo 1" onerror="missingImage(this,'Falta images/m1/m1-apoyo.jpg')">
+          </div>
+        </div>
+      </div>
+
+      <div class="panel tinted-gold">
+        <div class="eyebrow">Tres niveles</div>
+        <h2 class="section">Tres capas para entender la biodiversidad sin simplificarla</h2>
+        <p class="sectionText">
+          Entender estos tres niveles ayuda a no reducir la biodiversidad a un único plano.
+        </p>
+        <div class="cards3">
+          <div class="card">
+            <div class="bigIndex">01</div><div class="bottomBar"></div>
+            <span class="tag">Nivel 1</span><div class="bar"></div>
+            <h3>Diversidad genética</h3>
+            <p>Es la variabilidad dentro de una misma especie. Permite adaptación, resistencia frente a enfermedades y capacidad de respuesta al cambio.</p>
+          </div>
+          <div class="card blue">
+            <div class="bigIndex">02</div><div class="bottomBar"></div>
+            <span class="tag">Nivel 2</span><div class="bar"></div>
+            <h3>Diversidad de especies</h3>
+            <p>Es la variedad de especies presentes en un territorio o sistema ecológico. Cuanta mayor diversidad existe, más funciones puede sostener el conjunto.</p>
+          </div>
+          <div class="card gold">
+            <div class="bigIndex">03</div><div class="bottomBar"></div>
+            <span class="tag">Nivel 3</span><div class="bar"></div>
+            <h3>Diversidad de ecosistemas</h3>
+            <p>Es la variedad de hábitats, comunidades y procesos naturales: bosques, humedales, suelos, ríos, matorrales y otros sistemas que sostienen condiciones distintas para la vida.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel tinted-green">
+          <div class="eyebrow">Funciones esenciales</div>
+          <h2 class="section">Funciones ecológicas de las que dependemos cada día</h2>
+          <p class="sectionText">Cuando la biodiversidad se deteriora, no solo desaparecen especies: también se debilitan funciones ecológicas de las que dependemos.</p>
+          <div class="cards3" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+            <div class="card minih"><span class="tag">Función</span><div class="bar"></div><h3 style="font-size:22px">Fertilidad del suelo</h3><p>Sin suelos vivos y funcionales, los sistemas ecológicos pierden capacidad de sostener biodiversidad y productividad.</p></div>
+            <div class="card blue minih"><span class="tag">Función</span><div class="bar"></div><h3 style="font-size:22px">Polinización</h3><p>Muchas especies dependen de polinizadores para reproducirse y mantener cadenas tróficas y sistemas alimentarios.</p></div>
+            <div class="card gold minih"><span class="tag">Función</span><div class="bar"></div><h3 style="font-size:22px">Regulación del agua</h3><p>La biodiversidad ayuda a filtrar, regular y almacenar agua en mejores condiciones ecológicas.</p></div>
+            <div class="card teal minih"><span class="tag">Función</span><div class="bar"></div><h3 style="font-size:22px">Estabilidad climática</h3><p>Los ecosistemas diversos responden mejor a cambios y perturbaciones que los sistemas simplificados.</p></div>
+            <div class="card violet minih"><span class="tag">Función</span><div class="bar"></div><h3 style="font-size:22px">Control de plagas</h3><p>Las relaciones ecológicas ayudan a contener desequilibrios y a evitar proliferaciones problemáticas.</p></div>
+            <div class="card rose minih"><span class="tag">Función</span><div class="bar"></div><h3 style="font-size:22px">Resiliencia ecológica</h3><p>Cuanta más diversidad y complejidad ecológica existe, mayor capacidad de adaptación tiene el sistema.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-blue">
+          <div class="eyebrow">Presiones</div>
+          <h2 class="section">La pérdida de biodiversidad responde a presiones acumulativas</h2>
+          <p class="sectionText">La pérdida de biodiversidad no tiene una sola causa. Varias presiones actúan al mismo tiempo.</p>
+          <div class="cards2">
+            <div class="smallCard"><span class="miniChip gold">01 Cambio de uso del suelo</span><p>La transformación de hábitats en infraestructuras o sistemas simplificados reduce complejidad ecológica y conectividad.</p></div>
+            <div class="smallCard"><span class="miniChip green">02 Contaminación</span><p>Altera suelo, agua y aire; daña especies sensibles y modifica procesos ecológicos esenciales.</p></div>
+            <div class="smallCard"><span class="miniChip blue">03 Sobreexplotación</span><p>Extraer recursos por encima de su capacidad de regeneración debilita poblaciones y rompe equilibrios.</p></div>
+            <div class="smallCard"><span class="miniChip blue">04 Cambio climático</span><p>Desajusta ciclos biológicos, desplaza especies y agrava otras presiones ya existentes.</p></div>
+            <div class="smallCard" style="grid-column:1 / -1"><span class="miniChip green">05 Especies exóticas invasoras</span><p>Pueden desplazar especies locales, competir por recursos, alterar cadenas tróficas y cambiar el funcionamiento del sistema en poco tiempo.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel tinted-gold">
+          <div class="eyebrow">Mini quiz</div>
+          <h2 class="section">Comprueba si ya manejas la base del módulo</h2>
+          <div class="cards3">
+            <div class="card minih"><span class="tag">Quiz 1</span><div class="bar"></div><h3 style="font-size:24px">¿Qué describe mejor la biodiversidad?</h3><p>La variedad de vida, sus relaciones y los sistemas que la sostienen.</p></div>
+            <div class="card blue minih"><span class="tag">Quiz 2</span><div class="bar"></div><h3 style="font-size:24px">¿Qué no es un nivel principal?</h3><p>La diversidad financiera no forma parte de la biodiversidad.</p></div>
+            <div class="card gold minih"><span class="tag">Quiz 3</span><div class="bar"></div><h3 style="font-size:24px">¿Por qué importa comprenderla bien?</h3><p>Porque ayuda a evitar simplificaciones y a diseñar acciones con más criterio.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-green">
+          <div class="eyebrow">Cierre del módulo</div>
+          <h2 class="section">Qué hace que una propuesta genere más confianza dentro de Airbus</h2>
+          <p class="sectionText">Piensa en una zona exterior, una acción de sensibilización, una práctica de mantenimiento o una medida de mejora ambiental.</p>
+          <div style="margin-top:24px" class="imageCard">
+            <span class="imageBadge">Caso práctico</span>
+            <img src="images/m1/m1-caso.jpg" alt="Caso módulo 1" onerror="missingImage(this,'Falta images/m1/m1-caso.jpg')">
+          </div>
+          <div class="heroBtns">
+            <button class="btn light" onclick="showView('menu')">← Volver al menú</button>
+            <button class="btn dark" onclick="showModule('m2')">Ir al Módulo 2 →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><span>Biodiversidad con criterio · Módulo 1 · Fundamentos de biodiversidad</span><button onclick="showView('menu')">Volver al menú</button></div>
+    </section>
+
+    <section id="module-m2" class="modulePage">
+      <div class="hero">
+        <div class="heroGrid module">
+          <div>
+            <div class="moduleHeader">
+              <button class="btn light" style="padding:10px 14px" onclick="showView('menu')">← Volver al menú</button>
+              <span class="chip soft-blue">Módulo 2</span>
+            </div>
+            <h2 class="section" style="font-size:60px">Ciclo de vida aeronáutico y biodiversidad</h2>
+            <p class="sectionText" style="font-size:18px">
+              Este módulo estudia cómo la aeronáutica afecta a la biodiversidad desde la cuna hasta la tumba:
+              diseño, materiales, fabricación, operación, mantenimiento, retirada del servicio y reciclaje.
+            </p>
+            <div class="metrics">
+              <div class="metric"><div class="ghost">14</div><div class="bar"></div><div class="value">14</div><div class="label">Pantallas</div></div>
+              <div class="metric"><div class="ghost">35</div><div class="bar"></div><div class="value">30–35</div><div class="label">Minutos</div></div>
+              <div class="metric"><div class="ghost">↺</div><div class="bar"></div><div class="value">Cradle</div><div class="label">To grave</div></div>
+            </div>
+          </div>
+          <div class="visualBox">
+            <img src="images/m2/m2-hero.jpg" alt="Módulo 2 hero" onerror="missingImage(this,'Falta images/m2/m2-hero.jpg')">
+            <div class="floating right">
+              <div class="mini">Aprenderás a</div>
+              <ul>
+                <li><span class="dot sky"></span>Leer el avión como sistema de ciclo de vida</li>
+                <li><span class="dot sky"></span>Distinguir impactos directos e indirectos</li>
+                <li><span class="dot sky"></span>Entender evaluación, mitigación y límites</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel tinted-blue">
+        <div class="eyebrow">Conceptos clave</div>
+        <h2 class="section">Siglas que estructuran este módulo</h2>
+        <div class="cards4">
+          <div class="card minih"><span class="tag">LCA</span><div class="bar"></div><h3 style="font-size:24px">Evaluación del ciclo de vida</h3><p>Método para evaluar impactos ambientales a lo largo de todas las fases de un producto o sistema.</p></div>
+          <div class="card blue minih"><span class="tag">SAF</span><div class="bar"></div><h3 style="font-size:24px">Combustibles sostenibles de aviación</h3><p>Su valor depende de criterios exigentes de sostenibilidad y de su desempeño en ciclo de vida.</p></div>
+          <div class="card gold minih"><span class="tag">ICAO</span><div class="bar"></div><h3 style="font-size:24px">Organización de Aviación Civil Internacional</h3><p>Establece marcos y metodologías internacionales para la aviación civil.</p></div>
+          <div class="card violet minih"><span class="tag">CORSIA</span><div class="bar"></div><h3 style="font-size:24px">Plan de compensación y reducción de carbono</h3><p>Marco internacional que introduce metodologías y criterios de sostenibilidad para combustibles elegibles.</p></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="eyebrow">Marco teórico</div>
+          <h2 class="section">La biodiversidad se ve afectada a lo largo de todo el ciclo de vida del avión</h2>
+          <div class="cards3">
+            <div class="card mid"><div class="bigIndex">01</div><div class="bottomBar"></div><span class="tag">Idea base</span><div class="bar"></div><h3>El ciclo de vida completo importa</h3><p>Un avión no debería evaluarse solo cuando vuela. Diseño, extracción de materiales, fabricación, logística, operación, mantenimiento, retirada del servicio y reciclaje forman parte del mismo sistema.</p></div>
+            <div class="card blue mid"><div class="bigIndex">02</div><div class="bottomBar"></div><span class="tag">Idea base</span><div class="bar"></div><h3>Clima y biodiversidad no se separan bien</h3><p>La fase de uso domina gran parte de la huella climática, pero biodiversidad no se reduce a emisiones: también aparecen impactos locales y materiales en fases distintas.</p></div>
+            <div class="card gold mid"><div class="bigIndex">03</div><div class="bottomBar"></div><span class="tag">Idea base</span><div class="bar"></div><h3>No todo el impacto es visible</h3><p>Parte del daño es local y directo, y otra parte es indirecta o desplazada a la cadena de suministro, combustibles o materiales.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-green">
+          <div class="eyebrow">Apoyo visual</div>
+          <h2 class="section">El avión es solo la parte visible del sistema</h2>
+          <div class="imgGrid2">
+            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m2/m2-apoyo.jpg" alt="Apoyo módulo 2" onerror="missingImage(this,'Falta images/m2/m2-apoyo.jpg')"></div>
+            <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m2/m2-caso.jpg" alt="Caso módulo 2" onerror="missingImage(this,'Falta images/m2/m2-caso.jpg')"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel tinted-gold">
+        <div class="eyebrow">Fases del ciclo</div>
+        <h2 class="section">Cada fase concentra presiones distintas</h2>
+        <div class="cards4">
+          <div class="card minih"><span class="tag">Fase 1</span><div class="bar"></div><h3 style="font-size:24px">Diseño y desarrollo</h3><p>Condiciona masa, materiales, eficiencia, mantenibilidad y reciclabilidad.</p></div>
+          <div class="card blue minih"><span class="tag">Fase 2</span><div class="bar"></div><h3 style="font-size:24px">Producción e industrialización</h3><p>Concentra consumo de materiales, energía, residuos y presión sobre materias primas.</p></div>
+          <div class="card gold minih"><span class="tag">Fase 3</span><div class="bar"></div><h3 style="font-size:24px">Operación y mantenimiento</h3><p>Aparecen combustible, ruido, iluminación, fauna, escorrentías y actividad aeroportuaria.</p></div>
+          <div class="card violet minih"><span class="tag">Fase 4</span><div class="bar"></div><h3 style="font-size:24px">Fin de vida y circularidad</h3><p>Importan recuperación de materiales, reutilización de piezas y diseño para desmontaje.</p></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel tinted-blue">
+          <div class="eyebrow">Tipos de impacto</div>
+          <h2 class="section">Directos, indirectos y acumulativos</h2>
+          <div class="cards2">
+            <div class="smallCard"><span class="miniChip gold">Impactos directos</span><p>Pérdida y degradación de hábitats, fragmentación, simplificación del entorno y relación con fauna por seguridad operacional.</p></div>
+            <div class="smallCard"><span class="miniChip green">Ruido y luz</span><p>Alteran comportamiento, comunicación, reproducción y uso del espacio en numerosas especies.</p></div>
+            <div class="smallCard"><span class="miniChip blue">Clima y combustibles</span><p>Las emisiones alteran temperatura, precipitación, fenología y disponibilidad de agua.</p></div>
+            <div class="smallCard"><span class="miniChip blue">Cadena de suministro</span><p>Parte de la presión ocurre donde se extraen, transforman y transportan materiales y energía.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-violet">
+          <div class="eyebrow">Mitigación y cierre</div>
+          <h2 class="section">Palancas y lectura final</h2>
+          <p class="sectionText">Diseño más eficiente, materiales, combustibles sostenibles, operación y circularidad no resuelven lo mismo. La lección importante es aprender a leer el sistema completo.</p>
+          <div class="heroBtns">
+            <button class="btn light" onclick="showView('menu')">← Volver al menú</button>
+            <button class="btn dark" onclick="showModule('m3')">Ir al Módulo 3 →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><span>Biodiversidad con criterio · Módulo 2 · Ciclo de vida aeronáutico y biodiversidad</span><button onclick="showView('menu')">Volver al menú</button></div>
+    </section>
+
+    <section id="module-m3" class="modulePage">
+      <div class="hero">
+        <div class="heroGrid module">
+          <div>
+            <div class="moduleHeader">
+              <button class="btn light" style="padding:10px 14px" onclick="showView('menu')">← Volver al menú</button>
+              <span class="chip soft-gold">Módulo 3</span>
+            </div>
+            <h2 class="section" style="font-size:60px">Biodiversidad, alimentación y estilos de vida</h2>
+            <p class="sectionText" style="font-size:18px">Este módulo explica por qué la alimentación y los hábitos cotidianos influyen en la biodiversidad. No se trata solo de lo que comemos, sino del sistema que hace posible esa comida.</p>
+            <div class="metrics">
+              <div class="metric"><div class="ghost">14</div><div class="bar"></div><div class="value">14</div><div class="label">Pantallas</div></div>
+              <div class="metric"><div class="ghost">35</div><div class="bar"></div><div class="value">30–35</div><div class="label">Minutos</div></div>
+              <div class="metric"><div class="ghost">◉</div><div class="bar"></div><div class="value">Vida diaria</div><div class="label">Aplicación</div></div>
+            </div>
+          </div>
+          <div class="visualBox">
+            <img src="images/m3/m3-hero.jpg" alt="Módulo 3 hero" onerror="missingImage(this,'Falta images/m3/m3-hero.jpg')">
+            <div class="floating right">
+              <div class="mini">Aprenderás a</div>
+              <ul>
+                <li><span class="dot amber"></span>Relacionar comida y biodiversidad</li>
+                <li><span class="dot amber"></span>Entender presiones del sistema alimentario</li>
+                <li><span class="dot amber"></span>Tomar decisiones con más criterio cotidiano</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="eyebrow">Marco teórico</div>
+          <h2 class="section">La alimentación también es una cuestión de biodiversidad</h2>
+          <div class="cards3">
+            <div class="card mid"><span class="tag">Idea base</span><div class="bar"></div><h3>La alimentación también cuenta</h3><p>Lo que parece una decisión individual se apoya en cadenas de producción y consumo que pueden intensificar o reducir presión sobre suelos, agua, hábitats y ecosistemas marinos.</p></div>
+            <div class="card blue mid"><span class="tag">Idea base</span><div class="bar"></div><h3>El plato está conectado con el territorio</h3><p>Antes de llegar a una cafetería o a una mesa, un alimento ya ha pasado por decisiones de uso del suelo, riego, fertilización, transporte, procesado y conservación.</p></div>
+            <div class="card gold mid"><span class="tag">Idea base</span><div class="bar"></div><h3>No se trata de perfección, sino de criterio</h3><p>La intención es aportar criterio para leer mejor el sistema alimentario: qué patrones ejercen más presión y qué cambios pueden reducirla.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-gold">
+          <div class="eyebrow">Apoyo visual</div>
+          <h2 class="section">Del territorio al plato</h2>
+          <div class="imgGrid2">
+            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m3/m3-apoyo.jpg" alt="Apoyo módulo 3" onerror="missingImage(this,'Falta images/m3/m3-apoyo.jpg')"></div>
+            <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m3/m3-caso.jpg" alt="Caso módulo 3" onerror="missingImage(this,'Falta images/m3/m3-caso.jpg')"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel tinted-blue">
+        <div class="eyebrow">Conceptos estructurales</div>
+        <h2 class="section">Antes de opinar sobre un alimento, conviene entender el sistema</h2>
+        <div class="cards4">
+          <div class="card minih"><span class="tag">Concepto</span><div class="bar"></div><h3 style="font-size:24px">Sistema alimentario</h3><p>Incluye producción, transformación, transporte, distribución, restauración, consumo y residuo.</p></div>
+          <div class="card blue minih"><span class="tag">Concepto</span><div class="bar"></div><h3 style="font-size:24px">Presión ecológica</h3><p>Es la forma en que una actividad reduce calidad del hábitat o altera procesos ecológicos.</p></div>
+          <div class="card gold minih"><span class="tag">Concepto</span><div class="bar"></div><h3 style="font-size:24px">Patrón de consumo</h3><p>No es una compra aislada, sino una combinación repetida de frecuencia, cantidad, origen y desperdicio.</p></div>
+          <div class="card violet minih"><span class="tag">Concepto</span><div class="bar"></div><h3 style="font-size:24px">Trazabilidad útil</h3><p>Ayuda a interpretar mejor origen, sistema productivo, procesado y residuo.</p></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel tinted-green">
+          <div class="eyebrow">Presiones</div>
+          <h2 class="section">El sistema alimentario concentra varias presiones</h2>
+          <div class="cards2">
+            <div class="smallCard"><span class="miniChip gold">Cambio de uso del suelo</span><p>Bosques, pastizales o humedales se transforman en superficies agrícolas, ganaderas o infraestructuras asociadas.</p></div>
+            <div class="smallCard"><span class="miniChip green">Simplificación y monocultivo</span><p>Menos diversidad de cultivos, menos heterogeneidad del paisaje, menos refugios y menos relaciones ecológicas.</p></div>
+            <div class="smallCard"><span class="miniChip blue">Agua, contaminación y nutrientes</span><p>Riego intensivo, fertilizantes y efluentes alteran ríos, suelos, acuíferos y ecosistemas receptores.</p></div>
+            <div class="smallCard"><span class="miniChip blue">Presión sobre ecosistemas marinos</span><p>Sobrepesca, capturas accesorias, degradación de hábitats costeros y presión sobre cadenas tróficas.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-violet">
+          <div class="eyebrow">Cierre y aplicación</div>
+          <h2 class="section">La teoría sirve también para revisar decisiones colectivas</h2>
+          <p class="sectionText">Cafetería, vending, catering y compras internas pueden analizarse mejor cuando se añaden preguntas sobre patrón de consumo, desperdicio, trazabilidad y presión probable sobre biodiversidad.</p>
+          <div class="heroBtns">
+            <button class="btn light" onclick="showView('menu')">← Volver al menú</button>
+            <button class="btn dark" onclick="showModule('m4')">Ir al Módulo 4 →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><span>Biodiversidad con criterio · Módulo 3 · Alimentación y estilos de vida</span><button onclick="showView('menu')">Volver al menú</button></div>
+    </section>
+
+    <section id="module-m4" class="modulePage">
+      <div class="hero">
+        <div class="heroGrid module">
+          <div>
+            <div class="moduleHeader">
+              <button class="btn light" style="padding:10px 14px" onclick="showView('menu')">← Volver al menú</button>
+              <span class="chip soft-green">Módulo 4</span>
+            </div>
+            <h2 class="section" style="font-size:58px">Conservación, restauración y soluciones basadas en la naturaleza</h2>
+            <p class="sectionText" style="font-size:18px">Este módulo explica qué diferencia conservar, preservar, restaurar y aplicar soluciones basadas en la naturaleza, y cómo distinguir entre intervenciones con valor ecológico real y acciones principalmente cosméticas.</p>
+            <div class="metrics">
+              <div class="metric"><div class="ghost">15</div><div class="bar"></div><div class="value">15</div><div class="label">Pantallas</div></div>
+              <div class="metric"><div class="ghost">35</div><div class="bar"></div><div class="value">30–35</div><div class="label">Minutos</div></div>
+              <div class="metric"><div class="ghost">✓</div><div class="bar"></div><div class="value">Criterio</div><div class="label">De evaluación</div></div>
+            </div>
+          </div>
+          <div class="visualBox">
+            <img src="images/m4/m4-hero.jpg" alt="Módulo 4 hero" onerror="missingImage(this,'Falta images/m4/m4-hero.jpg')">
+            <div class="floating right">
+              <div class="mini">Aprenderás a</div>
+              <ul>
+                <li><span class="dot teal"></span>Diferenciar conceptos sin mezclarlos</li>
+                <li><span class="dot teal"></span>Evaluar valor ecológico con más rigor</li>
+                <li><span class="dot teal"></span>Detectar intervenciones sólidas frente a cosméticas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="eyebrow">Conceptos clave</div>
+          <h2 class="section">Antes de evaluar una intervención, conviene distinguir bien los conceptos</h2>
+          <div class="cards3">
+            <div class="card mid"><span class="tag">Concepto</span><div class="bar"></div><h3>Conservación</h3><p>Evita deterioro adicional, mantiene integridad ecológica y protege biodiversidad antes de que el sistema se degrade más.</p></div>
+            <div class="card blue mid"><span class="tag">Concepto</span><div class="bar"></div><h3>Restauración ecológica</h3><p>Busca asistir la recuperación de un ecosistema degradado para mejorar estructura, composición, función y trayectoria ecológica.</p></div>
+            <div class="card gold mid"><span class="tag">Concepto</span><div class="bar"></div><h3>Soluciones basadas en la naturaleza</h3><p>Protegen, gestionan o restauran ecosistemas para responder a retos sociales al tiempo que generan beneficios para biodiversidad y personas.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-teal">
+          <div class="eyebrow">Apoyo visual</div>
+          <h2 class="section">No todo lo verde tiene el mismo valor ecológico</h2>
+          <div class="imgGrid2">
+            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m4/m4-apoyo.jpg" alt="Apoyo módulo 4" onerror="missingImage(this,'Falta images/m4/m4-apoyo.jpg')"></div>
+            <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m4/m4-caso.jpg" alt="Caso módulo 4" onerror="missingImage(this,'Falta images/m4/m4-caso.jpg')"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel tinted-blue">
+        <div class="eyebrow">Principios de una restauración sólida</div>
+        <h2 class="section">La restauración gana valor cuando se apoya en principios claros y medibles</h2>
+        <div class="cards6">
+          <div class="card minih"><span class="tag">Principio</span><div class="bar"></div><h3 style="font-size:22px">Diagnóstico y línea de base</h3><p>Hay que entender presiones, estado inicial y trayectoria de degradación.</p></div>
+          <div class="card blue minih"><span class="tag">Principio</span><div class="bar"></div><h3 style="font-size:22px">Referencia ecológica</h3><p>La recuperación necesita una condición de referencia razonable y coherente con el lugar.</p></div>
+          <div class="card gold minih"><span class="tag">Principio</span><div class="bar"></div><h3 style="font-size:22px">Reducir impulsores de degradación</h3><p>Si la presión principal sigue activa, la restauración se debilita.</p></div>
+          <div class="card teal minih"><span class="tag">Principio</span><div class="bar"></div><h3 style="font-size:22px">Recuperar funciones</h3><p>Importa si mejora infiltración, suelo, refugio, conectividad o regeneración.</p></div>
+          <div class="card violet minih"><span class="tag">Principio</span><div class="bar"></div><h3 style="font-size:22px">Medir y corregir</h3><p>Sin seguimiento, la mejora queda en afirmaciones difíciles de defender.</p></div>
+          <div class="card rose minih"><span class="tag">Principio</span><div class="bar"></div><h3 style="font-size:22px">Adecuación local</h3><p>La solución debe encajar con el uso real del lugar y con sus restricciones operativas.</p></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel tinted-gold">
+          <div class="eyebrow">Grados de valor</div>
+          <h2 class="section">No todas las actuaciones verdes tienen el mismo peso ecológico</h2>
+          <div class="cards3">
+            <div class="card minih"><span class="tag">Nivel</span><div class="bar"></div><h3 style="font-size:24px">Valor ecológico real</h3><p>Reduce presiones, mejora integridad ecológica y puede justificarse con objetivos e indicadores.</p></div>
+            <div class="card blue minih"><span class="tag">Nivel</span><div class="bar"></div><h3 style="font-size:24px">Valor ecológico limitado</h3><p>Aporta algo, pero de forma parcial o estrecha, sin cambiar sustancialmente la condición del sistema.</p></div>
+            <div class="card gold minih"><span class="tag">Nivel</span><div class="bar"></div><h3 style="font-size:24px">Valor principalmente estético</h3><p>Prioriza apariencia u orden visual sin una mejora ecológica significativa.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-violet">
+          <div class="eyebrow">Cierre y aplicación</div>
+          <h2 class="section">Este criterio sirve especialmente bien en entornos industriales</h2>
+          <p class="sectionText">En Airbus no todo lo valioso será espectacular ni todo lo vistoso será ecológicamente sólido. El criterio sirve para revisar entorno, mantenimiento, comunicación y mejoras de planta.</p>
+          <div class="heroBtns">
+            <button class="btn light" onclick="showView('menu')">← Volver al menú</button>
+            <button class="btn dark" onclick="showModule('m5')">Ir al Módulo 5 →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><span>Biodiversidad con criterio · Módulo 4 · Conservación, restauración y soluciones basadas en la naturaleza</span><button onclick="showView('menu')">Volver al menú</button></div>
+    </section>
+
+    <section id="module-m5" class="modulePage">
+      <div class="hero">
+        <div class="heroGrid module">
+          <div>
+            <div class="moduleHeader">
+              <button class="btn light" style="padding:10px 14px" onclick="showView('menu')">← Volver al menú</button>
+              <span class="chip soft-blue">Módulo 5</span>
+            </div>
+            <h2 class="section" style="font-size:60px">Indicadores, datos e impacto real</h2>
+            <p class="sectionText" style="font-size:18px">Este módulo explica cómo convertir acciones de biodiversidad en iniciativas medibles, defendibles y comunicables con más credibilidad.</p>
+            <div class="metrics">
+              <div class="metric"><div class="ghost">15</div><div class="bar"></div><div class="value">15</div><div class="label">Pantallas</div></div>
+              <div class="metric"><div class="ghost">35</div><div class="bar"></div><div class="value">30–35</div><div class="label">Minutos</div></div>
+              <div class="metric"><div class="ghost">∑</div><div class="bar"></div><div class="value">Evidencia</div><div class="label">Aplicable</div></div>
+            </div>
+          </div>
+          <div class="visualBox">
+            <img src="images/m5/m5-hero.jpg" alt="Módulo 5 hero" onerror="missingImage(this,'Falta images/m5/m5-hero.jpg')">
+            <div class="floating right">
+              <div class="mini">Aprenderás a</div>
+              <ul>
+                <li><span class="dot violet"></span>Diseñar indicadores más útiles</li>
+                <li><span class="dot violet"></span>Separar actividad, resultado e impacto</li>
+                <li><span class="dot violet"></span>Comunicar evidencia con más credibilidad</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="eyebrow">Conceptos clave</div>
+          <h2 class="section">Antes de medir, conviene aclarar bien qué significa medir</h2>
+          <div class="cards3">
+            <div class="card mid"><span class="tag">Concepto</span><div class="bar"></div><h3>Indicador</h3><p>Variable que resume información compleja para apoyar decisiones.</p></div>
+            <div class="card blue mid"><span class="tag">Concepto</span><div class="bar"></div><h3>Línea de base</h3><p>El punto de partida frente al que se comparan los cambios.</p></div>
+            <div class="card gold mid"><span class="tag">Concepto</span><div class="bar"></div><h3>Proxy y límites</h3><p>Muchas veces se usan sustitutos razonables y siempre conviene explicar incertidumbre y alcance real.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-violet">
+          <div class="eyebrow">Apoyo visual</div>
+          <h2 class="section">Un buen sistema de indicadores une objetivo, escala y método</h2>
+          <div class="imgGrid2">
+            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m5/m5-apoyo.jpg" alt="Apoyo módulo 5" onerror="missingImage(this,'Falta images/m5/m5-apoyo.jpg')"></div>
+            <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m5/m5-caso.jpg" alt="Caso módulo 5" onerror="missingImage(this,'Falta images/m5/m5-caso.jpg')"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel tinted-blue">
+        <div class="eyebrow">Familias de indicadores</div>
+        <h2 class="section">Un sistema más sólido combina presiones, estado, respuestas y resultados</h2>
+        <div class="cards4">
+          <div class="card minih"><span class="tag">Familia</span><div class="bar"></div><h3 style="font-size:24px">Presión</h3><p>Sellado del suelo, fragmentación, contaminación, invasoras, ruido o iluminación.</p></div>
+          <div class="card blue minih"><span class="tag">Familia</span><div class="bar"></div><h3 style="font-size:24px">Estado</h3><p>Condición del sistema: hábitat, vegetación nativa, suelo, conectividad o agua.</p></div>
+          <div class="card gold minih"><span class="tag">Familia</span><div class="bar"></div><h3 style="font-size:24px">Respuesta</h3><p>Lo que se hace: superficie tratada, cambios de manejo, protocolos o presupuesto.</p></div>
+          <div class="card violet minih"><span class="tag">Familia</span><div class="bar"></div><h3 style="font-size:24px">Resultado e impacto</h3><p>Lo que realmente cambia: mejora de cobertura nativa, conectividad o reducción de presión.</p></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel tinted-green">
+          <div class="eyebrow">Diseño del sistema</div>
+          <h2 class="section">La calidad del seguimiento depende del diseño inicial</h2>
+          <div class="cards3">
+            <div class="smallCard"><span class="miniChip gold">1. Decisión</span><p>Definir qué decisión se quiere apoyar y qué error costaría más cometer.</p></div>
+            <div class="smallCard"><span class="miniChip green">2. Escala</span><p>Delimitar lugar, horizonte temporal y frecuencia de revisión.</p></div>
+            <div class="smallCard"><span class="miniChip blue">3. Variables</span><p>Elegir variables sensibles y científicamente defendibles.</p></div>
+            <div class="smallCard"><span class="miniChip blue">4. Línea de base</span><p>Fijar punto de partida, meta y criterio de cambio.</p></div>
+            <div class="smallCard"><span class="miniChip green">5. Incertidumbre</span><p>Explicar límites, sesgos, lagunas de información y confianza.</p></div>
+            <div class="smallCard"><span class="miniChip gold">6. Gestión adaptativa</span><p>Medir para corregir y aprender, no solo para reportar.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-gold">
+          <div class="eyebrow">Cierre y aplicación</div>
+          <h2 class="section">Un sistema útil para Airbus debería medir mejor sin prometer más de la cuenta</h2>
+          <p class="sectionText">La utilidad está en construir seguimientos sobrios, claros y defendibles, con separación nítida entre presión, estado, respuesta y resultado.</p>
+          <div class="heroBtns">
+            <button class="btn light" onclick="showView('menu')">← Volver al menú</button>
+            <button class="btn dark" onclick="showModule('m6')">Ir al Módulo 6 →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><span>Biodiversidad con criterio · Módulo 5 · Indicadores, datos e impacto real</span><button onclick="showView('menu')">Volver al menú</button></div>
+    </section>
+
+    <section id="module-m6" class="modulePage">
+      <div class="hero">
+        <div class="heroGrid module">
+          <div>
+            <div class="moduleHeader">
+              <button class="btn light" style="padding:10px 14px" onclick="showView('menu')">← Volver al menú</button>
+              <span class="chip soft-rose">Módulo 6</span>
+            </div>
+            <h2 class="section" style="font-size:60px">Tu plan de acción en biodiversidad</h2>
+            <p class="sectionText" style="font-size:18px">Este módulo convierte el aprendizaje del curso en una propuesta aplicable a tu entorno de trabajo. La idea es convertir lo aprendido en una propuesta clara, útil y realista para Airbus.</p>
+            <div class="metrics">
+              <div class="metric"><div class="ghost">15</div><div class="bar"></div><div class="value">15</div><div class="label">Pantallas</div></div>
+              <div class="metric"><div class="ghost">35</div><div class="bar"></div><div class="value">30–35</div><div class="label">Minutos</div></div>
+              <div class="metric"><div class="ghost">→</div><div class="bar"></div><div class="value">Propuesta</div><div class="label">Aplicable</div></div>
+            </div>
+          </div>
+          <div class="visualBox">
+            <img src="images/m6/m6-hero.jpg" alt="Módulo 6 hero" onerror="missingImage(this,'Falta images/m6/m6-hero.jpg')">
+            <div class="floating right">
+              <div class="mini">Aprenderás a</div>
+              <ul>
+                <li><span class="dot rose"></span>Detectar oportunidades reales</li>
+                <li><span class="dot rose"></span>Priorizar acciones con criterio</li>
+                <li><span class="dot rose"></span>Formular una propuesta defendible</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="eyebrow">Marco de cierre</div>
+          <h2 class="section">Ahora toca convertir lo aprendido en una propuesta real</h2>
+          <div class="cards3">
+            <div class="card mid"><span class="tag">Idea base</span><div class="bar"></div><h3>El aprendizaje solo gana valor si se traduce en una propuesta útil</h3><p>El cierre natural del curso consiste en convertir el conocimiento adquirido en una acción razonable y adaptada al contexto real de Airbus.</p></div>
+            <div class="card blue mid"><span class="tag">Idea base</span><div class="bar"></div><h3>No se trata de proponer lo más vistoso</h3><p>Una buena propuesta responde a un problema bien planteado, encaja con el lugar y puede explicarse con criterio técnico y operativo.</p></div>
+            <div class="card gold mid"><span class="tag">Idea base</span><div class="bar"></div><h3>Un plan útil combina foco, viabilidad y credibilidad</h3><p>La meta es identificar una oportunidad real, priorizar una acción posible y formular una propuesta que pueda discutirse con madurez dentro de Airbus.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-rose">
+          <div class="eyebrow">Apoyo visual</div>
+          <h2 class="section">De la oportunidad detectada al plan bien armado</h2>
+          <div class="imgGrid2">
+            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m6/m6-apoyo.jpg" alt="Apoyo módulo 6" onerror="missingImage(this,'Falta images/m6/m6-apoyo.jpg')"></div>
+            <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m6/m6-caso.jpg" alt="Caso módulo 6" onerror="missingImage(this,'Falta images/m6/m6-caso.jpg')"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel tinted-blue">
+        <div class="eyebrow">Arquitectura del plan</div>
+        <h2 class="section">Una propuesta útil necesita una estructura simple y defendible</h2>
+        <div class="cards4">
+          <div class="card minih"><span class="tag">Bloque</span><div class="bar"></div><h3 style="font-size:24px">Oportunidad detectada</h3><p>Qué oportunidad de mejora has identificado y dónde aparece dentro de Airbus.</p></div>
+          <div class="card blue minih"><span class="tag">Bloque</span><div class="bar"></div><h3 style="font-size:24px">Problema y justificación</h3><p>Qué presión o debilidad corrige y por qué merece prioridad.</p></div>
+          <div class="card gold minih"><span class="tag">Bloque</span><div class="bar"></div><h3 style="font-size:24px">Acción propuesta</h3><p>Qué harías exactamente y con qué alcance o formato piloto.</p></div>
+          <div class="card rose minih"><span class="tag">Bloque</span><div class="bar"></div><h3 style="font-size:24px">Seguimiento mínimo</h3><p>Qué indicador seguirías y en qué plazo tendría sentido revisarlo.</p></div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel tinted-green">
+          <div class="eyebrow">Dónde buscar oportunidades</div>
+          <h2 class="section">No hace falta inventar un problema nuevo</h2>
+          <div class="cards2">
+            <div class="smallCard"><span class="miniChip green">Zonas exteriores</span><p>Gestión del suelo, drenajes, iluminación, siegas, vegetación, conectividad o invasoras.</p></div>
+            <div class="smallCard"><span class="miniChip blue">Mantenimiento y operación</span><p>Revisar prácticas recurrentes con lógica ecológica y no solo operativa.</p></div>
+            <div class="smallCard"><span class="miniChip gold">Compras y proveedores</span><p>Introducir criterios ambientales y ecológicos más útiles y verificables.</p></div>
+            <div class="smallCard"><span class="miniChip blue">Sensibilización y coordinación</span><p>Mejorar cómo se explica, se prioriza o se integra la biodiversidad en la organización.</p></div>
+          </div>
+        </div>
+        <div class="panel tinted-violet">
+          <div class="eyebrow">Cierre del curso</div>
+          <h2 class="section">El aprendizaje del curso debería convertirse en una propuesta concreta</h2>
+          <p class="sectionText">Después de este módulo, el recorrido debería traducirse en una propuesta mejor enfocada, más sobria, más viable y más creíble dentro de Airbus.</p>
+          <div class="heroBtns">
+            <button class="btn light" onclick="showView('menu')">← Volver al menú</button>
+            <button class="btn dark" onclick="showView('home')">Ir a inicio →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer"><span>Biodiversidad con criterio · Módulo 6 · Tu plan de acción en biodiversidad</span><button onclick="showView('menu')">Volver al menú</button></div>
+    </section>
+  </div>
+
+  <script>
+    function setActiveNav(name){
+      document.getElementById('navHome').classList.toggle('active', name === 'home');
+      document.getElementById('navMenu').classList.toggle('active', name !== 'home');
+    }
+    function showView(name){
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.modulePage').forEach(v => v.classList.remove('active'));
+      document.getElementById(name).classList.add('active');
+      setActiveNav(name);
+      window.scrollTo(0,0);
+    }
+    function showModule(name){
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.modulePage').forEach(v => v.classList.remove('active'));
+      document.getElementById('module-' + name).classList.add('active');
+      setActiveNav('menu');
+      window.scrollTo(0,0);
+    }
+    function missingImage(img, msg){
+      const box = document.createElement('div');
+      box.className = 'missing';
+      box.innerHTML = '<div><strong>Imagen no encontrada</strong><br>' + msg + '</div>';
+      img.replaceWith(box);
+    }
+  </script>
+</body>
+</html>    
