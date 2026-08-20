@@ -240,6 +240,35 @@
       padding:8px 12px; border-radius:999px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.16em; box-shadow:0 8px 20px -12px rgba(15,23,42,.16)
     }
 
+    .caseBrief{display:grid;gap:14px;margin-top:20px}
+    .caseObjective{
+      border:1px solid #dce6df; background:rgba(255,255,255,.9); border-radius:22px; padding:17px 18px;
+    }
+    .caseObjective strong{display:block;font-size:15px;margin-bottom:6px}
+    .caseObjective p{margin:0;color:#556173;font-size:14px;line-height:1.7}
+    .caseData{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .caseDatum{border:1px solid #e4e9ee;background:#f8fafc;border-radius:18px;padding:13px}
+    .caseDatum .value{font-size:20px;font-weight:800;letter-spacing:-.03em;color:#1f2937}
+    .caseDatum .label{margin-top:4px;font-size:11px;line-height:1.45;color:#667085}
+    .caseQuestion{margin:4px 0 0;font-size:16px;line-height:1.55;color:#1f2937}
+    .caseOptions{display:grid;gap:10px}
+    .caseOption{
+      width:100%;text-align:left;border:1px solid #dce3ea;background:#fff;color:#374151;border-radius:20px;
+      padding:15px 16px;cursor:pointer;font:inherit;line-height:1.55;transition:border-color .18s,background .18s,transform .18s;
+    }
+    .caseOption:hover{border-color:#91a99a;background:#f8fbf8;transform:translateY(-1px)}
+    .caseOption strong{display:block;color:#111827;margin-bottom:4px}
+    .caseOption.selected{border-width:2px}
+    .caseOption.correct{border-color:#4f8a67;background:#edf7f0}
+    .caseOption.incorrect{border-color:#b76a6a;background:#fff4f4}
+    .caseFeedback{display:none;border-radius:20px;padding:16px 18px;font-size:14px;line-height:1.7}
+    .caseFeedback.show{display:block}
+    .caseFeedback.correct{border:1px solid #bedac6;background:#edf7f0;color:#294f35}
+    .caseFeedback.incorrect{border:1px solid #e4bcbc;background:#fff4f4;color:#713d3d}
+    .caseFeedback strong{display:block;margin-bottom:4px;color:inherit}
+    .caseInstruction{font-size:12px;color:#667085;margin:0}
+    .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
     .moduleGrid{display:grid; gap:18px; grid-template-columns:repeat(3,minmax(0,1fr))}
     .moduleCard{
       position:relative; overflow:hidden; border-radius:34px; border:1px solid rgba(255,255,255,.9);
@@ -311,6 +340,7 @@
       h1.main{font-size:56px}
       h2.section{font-size:38px}
       .metrics,.splitCards,.cards2,.moduleGrid,.cards4,.cards3,.cards6,.imgGrid2{grid-template-columns:1fr}
+      .caseData{grid-template-columns:1fr}
       .visualBox,.visualBox img{min-height:320px}
       .floating.left,.floating.right{position:static; margin-top:14px}
     }
@@ -672,13 +702,12 @@
           </div>
         </div>
         <div class="panel tinted-green">
-          <div class="eyebrow">Apoyo visual</div>
+          <div class="eyebrow">Las capas de la biodiversidad</div>
           <h2 class="section">Qué abarca realmente la biodiversidad</h2>
           <p class="sectionText">
             Genes, especies, ecosistemas, procesos ecológicos, funciones esenciales y relaciones entre organismos.
           </p>
           <div style="margin-top:24px" class="imageCard">
-            <span class="imageBadge">Apoyo visual</span>
             <img src="images/m1/m1-apoyo.jpg" alt="Apoyo módulo 1" onerror="missingImage(this,'Falta images/m1/m1-apoyo.jpg')">
           </div>
         </div>
@@ -751,16 +780,34 @@
           </div>
         </div>
         <div class="panel tinted-green">
-          <div class="eyebrow">Cierre del módulo</div>
-          <h2 class="section">Qué hace que una propuesta genere más confianza dentro de Airbus</h2>
-          <p class="sectionText">Piensa en una zona exterior, una acción de sensibilización, una práctica de mantenimiento o una medida de mejora ambiental.</p>
+          <div class="eyebrow">Caso de decisión · datos simulados</div>
+          <h2 class="section">¿Aprobarías la propuesta o pedirías que se reformulase?</h2>
+          <p class="sectionText">Un equipo propone transformar una zona de césped ornamental junto a un edificio industrial para favorecer la biodiversidad. La idea resulta atractiva, pero el comité necesita decidir si está suficientemente justificada.</p>
           <div style="margin-top:24px" class="imageCard">
-            <span class="imageBadge">Caso práctico</span>
             <img src="images/m1/m1-caso.jpg" alt="Caso módulo 1" onerror="missingImage(this,'Falta images/m1/m1-caso.jpg')">
+          </div>
+          <div class="caseBrief">
+            <div class="caseObjective">
+              <strong>Objetivo del ejercicio</strong>
+              <p>Comprobar si sabes distinguir una iniciativa vistosa de una propuesta que conecta diagnóstico, presión ecológica, acción, restricciones operativas y evidencia verificable.</p>
+            </div>
+            <div class="caseData" aria-label="Datos del escenario simulado">
+              <div class="caseDatum"><div class="value">4.000 m²</div><div class="label">Césped ornamental considerado</div></div>
+              <div class="caseDatum"><div class="value">Sin línea base</div><div class="label">No existe inventario ecológico previo</div></div>
+              <div class="caseDatum"><div class="value">3 límites</div><div class="label">Seguridad, mantenimiento y accesibilidad</div></div>
+            </div>
+            <p class="caseQuestion"><strong>¿Qué alternativa debería generar más confianza técnica?</strong></p>
+            <div id="m1CaseOptions" class="caseOptions">
+              <button class="caseOption" type="button" aria-pressed="false" onclick="checkM1Case(this,'activity')"><strong>A · Ejecutar y comunicar</strong>Sembrar flores en toda la superficie, lanzar una campaña y medir el número de participantes y fotografías publicadas.</button>
+              <button class="caseOption" type="button" aria-pressed="false" onclick="checkM1Case(this,'claim')"><strong>B · Prometer un gran impacto</strong>Transformar los 4.000 m² de una vez y anunciar una mejora del 60 % de la biodiversidad al finalizar el primer año.</button>
+              <button class="caseOption" type="button" aria-pressed="false" onclick="checkM1Case(this,'evidence')"><strong>C · Pilotar, medir y adaptar</strong>Evaluar primero la situación, revisar restricciones, probar en 800 m² y comparar indicadores definidos antes, durante y después de la actuación.</button>
+            </div>
+            <div id="m1CaseFeedback" class="caseFeedback" role="status" aria-live="polite"></div>
+            <p class="caseInstruction">Selecciona una alternativa para recibir retroalimentación y desbloquear el Módulo 2.</p>
           </div>
           <div class="heroBtns">
             <button class="btn light" onclick="showView('menu')">← Volver al menú</button>
-            <button class="btn dark" onclick="showModule('m2')">Ir al Módulo 2 →</button>
+            <button id="m1NextBtn" class="btn dark" onclick="showModule('m2')" disabled>Ir al Módulo 2 →</button>
           </div>
         </div>
       </div>
@@ -823,10 +870,10 @@
           </div>
         </div>
         <div class="panel tinted-green">
-          <div class="eyebrow">Apoyo visual</div>
+          <div class="eyebrow">Mapa del sistema</div>
           <h2 class="section">El avión es solo la parte visible del sistema</h2>
           <div class="imgGrid2">
-            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m2/m2-apoyo.jpg" alt="Apoyo módulo 2" onerror="missingImage(this,'Falta images/m2/m2-apoyo.jpg')"></div>
+            <div class="imageCard"><img src="images/m2/m2-apoyo.jpg" alt="Apoyo módulo 2" onerror="missingImage(this,'Falta images/m2/m2-apoyo.jpg')"></div>
             <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m2/m2-caso.jpg" alt="Caso módulo 2" onerror="missingImage(this,'Falta images/m2/m2-caso.jpg')"></div>
           </div>
         </div>
@@ -909,10 +956,10 @@
           </div>
         </div>
         <div class="panel tinted-gold">
-          <div class="eyebrow">Apoyo visual</div>
+          <div class="eyebrow">Cadena de impacto</div>
           <h2 class="section">Del territorio al plato</h2>
           <div class="imgGrid2">
-            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m3/m3-apoyo.jpg" alt="Apoyo módulo 3" onerror="missingImage(this,'Falta images/m3/m3-apoyo.jpg')"></div>
+            <div class="imageCard"><img src="images/m3/m3-apoyo.jpg" alt="Apoyo módulo 3" onerror="missingImage(this,'Falta images/m3/m3-apoyo.jpg')"></div>
             <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m3/m3-caso.jpg" alt="Caso módulo 3" onerror="missingImage(this,'Falta images/m3/m3-caso.jpg')"></div>
           </div>
         </div>
@@ -995,10 +1042,10 @@
           </div>
         </div>
         <div class="panel tinted-teal">
-          <div class="eyebrow">Apoyo visual</div>
+          <div class="eyebrow">Comparación de enfoques</div>
           <h2 class="section">No todo lo verde tiene el mismo valor ecológico</h2>
           <div class="imgGrid2">
-            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m4/m4-apoyo.jpg" alt="Apoyo módulo 4" onerror="missingImage(this,'Falta images/m4/m4-apoyo.jpg')"></div>
+            <div class="imageCard"><img src="images/m4/m4-apoyo.jpg" alt="Apoyo módulo 4" onerror="missingImage(this,'Falta images/m4/m4-apoyo.jpg')"></div>
             <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m4/m4-caso.jpg" alt="Caso módulo 4" onerror="missingImage(this,'Falta images/m4/m4-caso.jpg')"></div>
           </div>
         </div>
@@ -1082,10 +1129,10 @@
           </div>
         </div>
         <div class="panel tinted-violet">
-          <div class="eyebrow">Apoyo visual</div>
+          <div class="eyebrow">Arquitectura de medición</div>
           <h2 class="section">Un buen sistema de indicadores une objetivo, escala y método</h2>
           <div class="imgGrid2">
-            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m5/m5-apoyo.jpg" alt="Apoyo módulo 5" onerror="missingImage(this,'Falta images/m5/m5-apoyo.jpg')"></div>
+            <div class="imageCard"><img src="images/m5/m5-apoyo.jpg" alt="Apoyo módulo 5" onerror="missingImage(this,'Falta images/m5/m5-apoyo.jpg')"></div>
             <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m5/m5-caso.jpg" alt="Caso módulo 5" onerror="missingImage(this,'Falta images/m5/m5-caso.jpg')"></div>
           </div>
         </div>
@@ -1170,10 +1217,10 @@
           </div>
         </div>
         <div class="panel tinted-rose">
-          <div class="eyebrow">Apoyo visual</div>
+          <div class="eyebrow">Del diagnóstico a la acción</div>
           <h2 class="section">De la oportunidad detectada al plan bien armado</h2>
           <div class="imgGrid2">
-            <div class="imageCard"><span class="imageBadge">Apoyo visual</span><img src="images/m6/m6-apoyo.jpg" alt="Apoyo módulo 6" onerror="missingImage(this,'Falta images/m6/m6-apoyo.jpg')"></div>
+            <div class="imageCard"><img src="images/m6/m6-apoyo.jpg" alt="Apoyo módulo 6" onerror="missingImage(this,'Falta images/m6/m6-apoyo.jpg')"></div>
             <div class="imageCard"><span class="imageBadge">Caso práctico</span><img src="images/m6/m6-caso.jpg" alt="Caso módulo 6" onerror="missingImage(this,'Falta images/m6/m6-caso.jpg')"></div>
           </div>
         </div>
@@ -1234,6 +1281,27 @@
       document.getElementById('module-' + name).classList.add('active');
       setActiveNav('menu');
       window.scrollTo(0,0);
+    }
+    function checkM1Case(button, answer){
+      const feedback = document.getElementById('m1CaseFeedback');
+      const options = document.querySelectorAll('#m1CaseOptions .caseOption');
+      const isCorrect = answer === 'evidence';
+      options.forEach(option => {
+        option.classList.remove('selected','correct','incorrect');
+        option.setAttribute('aria-pressed','false');
+      });
+      button.classList.add('selected', isCorrect ? 'correct' : 'incorrect');
+      button.setAttribute('aria-pressed','true');
+      feedback.className = 'caseFeedback show ' + (isCorrect ? 'correct' : 'incorrect');
+
+      if(answer === 'activity'){
+        feedback.innerHTML = '<strong>Todavía no sería suficiente para aprobarla.</strong>La participación y las fotografías miden actividad y alcance comunicativo, pero no demuestran que el hábitat, las funciones ecológicas o las presiones hayan mejorado.';
+      }else if(answer === 'claim'){
+        feedback.innerHTML = '<strong>La propuesta debería reformularse.</strong>Sin línea base, método ni definición de “mejora”, el 60 % no es verificable. Además, intervenir toda la superficie sin piloto aumenta el riesgo operativo y reduce la capacidad de corregir.';
+      }else{
+        feedback.innerHTML = '<strong>Decisión sólida.</strong>El piloto permite comprobar compatibilidad operativa y comparar resultados con una línea base. La confianza no procede de que la idea sea atractiva, sino de que la lógica diagnóstico → acción → indicador → decisión puede verificarse y adaptarse.';
+      }
+      document.getElementById('m1NextBtn').disabled = false;
     }
     function missingImage(img, msg){
       const box = document.createElement('div');
